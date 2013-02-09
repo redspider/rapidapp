@@ -37,6 +37,7 @@ tmpl .gitignore
 tmpl README.md
 tmpl NAME/default.ini
 tmpl NAME/local.ini.dist
+tmpl NAME/local.ini
 tmpl NAME/__init__.py
 tmpl NAME/model/__init__.py
 tmpl NAME/templates/base.jinja2
