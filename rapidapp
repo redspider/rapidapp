@@ -54,6 +54,8 @@ echo "Installing requirements from cache"
 cd $TARGET/$NAME/app
 source ../bin/activate
 pip install --find-links=file://$TEMPLATES/packages --no-index --index-url=file:///dev/null -r requirements.txt
+echo "Compiling less for first time run"
+./app compile_less
 deactivate
 
 echo "All done."
