@@ -1,0 +1,58 @@
+#!/bin/bash
+
+function tmpl {
+	OPATH=$1;
+	TPATH=`echo "$OPATH" | /usr/bin/sed -e "s/NAME/$NAME/g"`
+	echo $TPATH
+	/bin/cat template/$OPATH | /usr/bin/sed -e "s/{NAME}/$NAME/g" >$TARGET/$NAME/app/$TPATH
+}
+
+TEMPLATES=`pwd`
+TARGET=$1
+NAME=$2
+echo "Creating new app $NAME in $TARGET"
+cd $TARGET
+mkdir $NAME
+cd $NAME
+virtualenv -p python2.7 .
+echo "Creating app dir"
+mkdir app
+cd app
+git init
+mkdir -p $NAME
+echo "Adding bootstrap"
+git submodule add git://github.com/twitter/bootstrap.git $NAME/cdn/less/bootstrap
+echo "Adding trex"
+git submodule add https://github.com/shoptime/trex.git trex
+cd $NAME
+
+echo "Building application"
+mkdir -p model
+mkdir -p templates/index
+mkdir -p view
+cd $TEMPLATES
+tmpl app
+tmpl wsgi.py
+tmpl .gitignore
+tmpl README.md
+tmpl NAME/default.ini
+tmpl NAME/local.ini.dist
+tmpl NAME/__init__.py
+tmpl NAME/model/__init__.py
+tmpl NAME/templates/base.jinja2
+tmpl NAME/templates/index/index.jinja2
+tmpl NAME/view/__init__.py
+tmpl NAME/view/index.py
+tmpl NAME/cdn/less/app.less
+tmpl requirements.txt
+
+echo "Fixing up permissions"
+chmod u+x $TARGET/$NAME/app/app
+
+echo "Installing requirements from cache"
+cd $TARGET/$NAME/app
+source ../bin/activate
+pip install --find-links=file://$TEMPLATES/packages --no-index --index-url=file:///dev/null -r requirements.txt
+deactivate
+
+echo "All done."

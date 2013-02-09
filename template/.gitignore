@@ -1,0 +1,26 @@
+# Local configuration
+
+/{NAME}/local.ini
+
+# Generated files
+
+/{NAME}/cdn/less/app.css
+
+# Virtual environment stuff
+
+/bin
+/include
+/lib
+/local
+/logs
+/share
+
+# Python stuff
+
+*.pyc
+.Python
+
+# phira stuff
+
+/.idea
+
