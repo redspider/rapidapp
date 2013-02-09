@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 
 from trex.support.run import Manager
 from {NAME} import app
@@ -6,8 +7,10 @@ from {NAME} import app
 manager = Manager(app)
 
 @manager.command
-def example():
-    "Example manager command"
+def compile_less():
+    """ Compile less files
+    """
+    os.system("lessc {NAME}/cdn/less/app.less")
 
 if __name__ == "__main__":
     manager.run()
